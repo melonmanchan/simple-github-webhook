@@ -1,0 +1,31 @@
+{
+  "name": "simple-github-webhook",
+  "version": "0.0.1",
+  "description": "A simple, Node.js based webhook for shell-script based deployment",
+  "main": "webhook.js",
+  "scripts": {
+    "start": "node webhook.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/melonmanchan/simple-github-webhook.git"
+  },
+  "keywords": [
+    "github",
+    "webhook",
+    "simple",
+    "git",
+    "ci",
+    "deployment",
+    "deploy"
+  ],
+  "author": "Matti Jokitulppo <melonmanchan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/melonmanchan/simple-github-webhook/issues"
+  },
+  "homepage": "https://github.com/melonmanchan/simple-github-webhook#readme",
+  "dependencies": {
+    "github-webhook-handler": "^0.5.0"
+  }
+}
