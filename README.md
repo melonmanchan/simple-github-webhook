@@ -37,7 +37,7 @@ PORT=1337 SECRET='My secret secret' BRANCH='feature-foo' npm start
 Output:
 
 ```sh
-GitHub webhook running at: 10.11.12.13:1337/
+GitHub webhook running at: http://10.11.12.13:1337/
 Listening for commits to branch refs/heads/feature-foo
 ```
 
