@@ -4,12 +4,13 @@
 var config = require('./config');
 
 var http          = require('http');
+var ip            = require('ip');
 var exec          = require('child_process').exec;
 var createHandler = require('github-webhook-handler');
 
 var handler = createHandler({
     secret: config.SECRET,
-    path:   config.PATH
+    path:   config.HOOK_PATH
 });
 
 http.createServer(function (req, res) {
@@ -17,16 +18,21 @@ http.createServer(function (req, res) {
         res.statusCode = 404;
         res.end('error')
     });
-}).listen(config.PORT);
+}).listen(config.PORT, function () {
+    console.log('GitHub webhook running at: ' + ip.address() + ':' + config.PORT + config.HOOK_PATH);
+    console.log('Listening for commits to branch ' + config.BRANCH);
+});
 
 handler.on('push', function (event) {
     if (event.payload.ref === config.BRANCH) {
+        console.log('Running Deployment now...');
         exec('sh deploy.sh', function(error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
             if (error !== null) {
                 console.log('exec error: ' + error);
             }
+            console.log('Deployment finished!');
         });
     }
 });
