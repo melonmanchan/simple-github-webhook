@@ -25,7 +25,7 @@ http.createServer(function (req, res) {
 
 handler.on('push', function (event) {
     if (event.payload.ref === config.BRANCH) {
-        console.log('Running Deployment now...');
+        console.log(new Date(), ' : Running deployment now...');
         exec('sh deploy.sh', function(error, stdout, stderr) {
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
