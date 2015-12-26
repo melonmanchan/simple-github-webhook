@@ -13,9 +13,11 @@ cd simple-github-webhook
 npm install
 ```
 
+While you're at it, you should also edit the deploy.sh script to be more suitable for your deployment needs.
+
 ## Step 2. Starting it up
 
-The webhook takes in the following 4 parameters, passed through environment variables:
+The webhook takes in the following four parameters, passed in through environment variables:
 
 
 Variable  | Meaning | Default
@@ -37,6 +39,26 @@ Output:
 ```sh
 GitHub webhook running at: 10.11.12.13:1337/
 Listening for commits to branch refs/heads/feature-foo
+```
+
+## Step 2. Setting up your repository on GitHub
+
+First, go to your repository's setting page, click on "Webhooks and services", and click on the button on the top right, labeled "Add webhook"
+
+![](http://i.imgur.com/r2W5fA0.png)
+
+GitHub will then prompt you for your password.
+
+Next, fill in the correct URL, path and secret that you specified and received while starting the webhook.
+
+![](http://i.imgur.com/hajyFuD.png)
+
+That should be enough to get your webhook up and running! Feel free to make a test commit or two to the branch you specified at the start to test it.
+
+```sh
+Running deployment now...
+# SCRIPT OUTPUT HERE
+Deployment finished!
 ```
 
 
