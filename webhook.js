@@ -19,7 +19,7 @@ http.createServer(function (req, res) {
         res.end('error')
     });
 }).listen(config.PORT, function () {
-    console.log('GitHub webhook running at: ' + ip.address() + ':' + config.PORT + config.HOOK_PATH);
+    console.log('GitHub webhook running at: http://' + ip.address() + ':' + config.PORT + config.HOOK_PATH);
     console.log('Listening for commits to branch ' + config.BRANCH);
 });
 
