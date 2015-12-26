@@ -1,4 +1,4 @@
-# Simple Github Webhook
+# Simple GitHub Webhook
 A simple, Node.js based webhook meant for shell-script based deployment!
 
 # Usage
