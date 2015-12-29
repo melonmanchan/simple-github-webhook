@@ -9,8 +9,8 @@ var exec          = require('child_process').exec;
 var createHandler = require('github-webhook-handler');
 
 var handler = createHandler({
-    secret: config.SECRET,
-    path:   config.HOOK_PATH
+    secret : config.SECRET,
+    path   : config.HOOK_PATH
 });
 
 http.createServer(function (req, res) {
