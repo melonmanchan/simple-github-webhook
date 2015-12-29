@@ -61,5 +61,10 @@ Running deployment now...
 Deployment finished!
 ```
 
+## License
 
+MIT © [Matti Jokitulppo](https://mattij.com)
+
+[![npm version](https://badge.fury.io/js/simple-github-webhook.svg)](https://badge.fury.io/js/simple-github-webhook)
+[![npm downloads](https://img.shields.io/npm/dm/simple-github-webhook.svg)](https://img.shields.io/npm/dm/simple-github-webhook.svg)
 
