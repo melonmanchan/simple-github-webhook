@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 'use strict';
 
-var config = require('./config');
+var config    = require('./config');
+var logger    = require('./logger');
+var LOG_TYPES = logger.LOG_TYPES;
 
 var http          = require('http');
 var ip            = require('ip');
@@ -19,25 +21,25 @@ http.createServer(function (req, res) {
         res.end('error')
     });
 }).listen(config.PORT, function () {
-    console.log('GitHub webhook running at: http://' + ip.address() + ':' + config.PORT + config.HOOK_PATH);
-    console.log('Listening for commits to branch ' + config.BRANCH);
+    logger.log('GitHub webhook running at: http://' + ip.address() + ':' + config.PORT + config.HOOK_PATH);
+    logger.log('Listening for commits to branch ' + config.BRANCH);
 });
 
 handler.on('push', function (event) {
     if (event.payload.ref === config.BRANCH) {
-        console.log(new Date(), ' : Running deployment now...');
+        logger.log('Running deployment script now...')
         exec('sh deploy.sh', function(error, stdout, stderr) {
-            console.log('stdout: ' + stdout);
-            console.log('stderr: ' + stderr);
+            logger.log('stdout: ' + stdout);
+            logger.log('stderr: ' + stderr, LOG_TYPES.ALERT);
             if (error !== null) {
-                console.log('exec error: ' + error);
+                logger.log('exec error: ' + error, LOG_TYPES.ALERT);
             }
-            console.log('Deployment finished!');
+            logger.log('Deployment finished!');
         });
     }
 });
 
 handler.on('error', function (error) {
-    console.error('Webhook error: ' + error);
+    logger.log('Webhook error: ' + error, LOG_TYPES.ALERT);
 });
 
