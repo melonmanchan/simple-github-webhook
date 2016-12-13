@@ -46,6 +46,7 @@ Output:
 ```sh
 GitHub webhook running at: http://10.11.12.13:1337/
 Listening for commits to branch refs/heads/feature-foo
+Will run following command on authenticated request: ./deploy.sh
 ```
 
 ## Step 2. Setting up your repository on GitHub
