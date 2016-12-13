@@ -28,12 +28,15 @@ http.createServer(function (req, res) {
 handler.on('push', function (event) {
     if (event.payload.ref === config.BRANCH) {
         logger.log('Running deployment script now...')
-        exec('sh deploy.sh', function(error, stdout, stderr) {
+
+        exec('./deploy.sh', function(error, stdout, stderr) {
             logger.log('stdout: ' + stdout);
             logger.log('stderr: ' + stderr, LOG_TYPES.ALERT);
+
             if (error !== null) {
                 logger.log('exec error: ' + error, LOG_TYPES.ALERT);
             }
+
             logger.log('Deployment finished!');
         });
     }
@@ -42,4 +45,3 @@ handler.on('push', function (event) {
 handler.on('error', function (error) {
     logger.log('Webhook error: ' + error, LOG_TYPES.ALERT);
 });
-
