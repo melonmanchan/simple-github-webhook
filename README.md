@@ -27,7 +27,7 @@ through environment variables:
 
 Variable  | Meaning | Default
 ------------- | ------------- | -------------
-COMMAND  | The command that is run on a succesful webhook  | /deploy.sh
+COMMAND  | The command that is run on a succesful webhook  | ./deploy.sh
 SECRET  | The GitHub secret for authentication | None (required!)
 HOOK_PATH  | The sub-path that the script runs under | /
 PORT  | The port the script runs under | 8080
