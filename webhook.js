@@ -23,13 +23,14 @@ http.createServer(function (req, res) {
 }).listen(config.PORT, function () {
     logger.log('GitHub webhook running at: http://' + ip.address() + ':' + config.PORT + config.HOOK_PATH);
     logger.log('Listening for commits to branch ' + config.BRANCH);
+    logger.log('Will run following command on authenticated request: ' + config.COMMAND);
 });
 
 handler.on('push', function (event) {
     if (event.payload.ref === config.BRANCH) {
         logger.log('Running deployment script now...')
 
-        exec('./deploy.sh', function(error, stdout, stderr) {
+        exec(config.COMMAND, function(error, stdout, stderr) {
             logger.log('stdout: ' + stdout);
             logger.log('stderr: ' + stderr, LOG_TYPES.ALERT);
 
