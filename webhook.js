@@ -30,11 +30,11 @@ handler.on('push', function (event) {
     if (event.payload.ref === config.BRANCH) {
         logger.log('Running deployment script now...')
 
-        exec(config.COMMAND, , {
+        exec(config.COMMAND, {
             env: {
-                REPOSITORY_NAME: event.paylog.repository.name,
+                REPOSITORY_NAME: event.payload.repository.name,
                 REPOSITORY_CLONE: event.payload.repository.clone_url,
-                REPOSITORY_CLONE_SSH: event.playload.repository.ssh_url
+                REPOSITORY_CLONE_SSH: event.payload.repository.ssh_url
             }
         }, function(error, stdout, stderr) {
             logger.log('stdout: ' + stdout);
