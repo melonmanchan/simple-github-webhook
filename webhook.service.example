@@ -1,0 +1,7 @@
+[Unit]
+Description=Mirror GHE Repositories
+
+[Service]
+ExecStart=/usr/bin/npm start
+WorkingDirectory=
+Environment=COMMAND=./mirror.sh "SECRET=YOUR SECRET HERE" PORT=8081
