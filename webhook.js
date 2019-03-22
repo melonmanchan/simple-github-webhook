@@ -25,9 +25,8 @@ http.createServer(function (req, res) {
     logger.log('Listening for commits to branch ' + config.BRANCH);
     logger.log('Will run following command on authenticated request: ' + config.COMMAND);
 });
-
-handler.on('push', function (event) {
-    if (event.payload.ref === config.BRANCH) {
+var deploy = function (event) {
+    if (event.payload.ref === config.BRANCH || event.payload.hook) {
         logger.log(`Running deployment script ${config.COMMAND} now...`)
 
         var cmd = spawn(config.COMMAND, [], {
@@ -54,7 +53,9 @@ handler.on('push', function (event) {
             logger.log(`Deployment finished with code ${code}`);
         });
     }
-});
+}
+handler.on('ping', deploy);
+handler.on('push', deploy);
 
 handler.on('error', function (error) {
     logger.log('Webhook error: ' + error, LOG_TYPES.ALERT);
