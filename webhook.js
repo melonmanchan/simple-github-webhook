@@ -7,7 +7,7 @@ var LOG_TYPES = logger.LOG_TYPES;
 
 var http          = require('http');
 var ip            = require('ip');
-var exec          = require('child_process').exec;
+var spawn = require('child_process').spawn;
 var createHandler = require('github-webhook-handler');
 
 var handler = createHandler({
@@ -28,23 +28,30 @@ http.createServer(function (req, res) {
 
 handler.on('push', function (event) {
     if (event.payload.ref === config.BRANCH) {
-        logger.log('Running deployment script now...')
+        logger.log(`Running deployment script ${config.COMMAND} now...`)
 
-        exec(config.COMMAND, {
+        var cmd = spawn(config.COMMAND, [], {
             env: {
                 REPOSITORY_NAME: event.payload.repository.name,
                 REPOSITORY_CLONE: event.payload.repository.clone_url,
                 REPOSITORY_CLONE_SSH: event.payload.repository.ssh_url
             }
-        }, function(error, stdout, stderr) {
-            logger.log('stdout: ' + stdout);
-            logger.log('stderr: ' + stderr, LOG_TYPES.ALERT);
+        })
 
-            if (error !== null) {
-                logger.log('exec error: ' + error, LOG_TYPES.ALERT);
-            }
+        cmd.stdout.on('data', (data) => {
+            data.toString().split("\n").forEach((v) => {
+                logger.log(v);
+            });
+        })
 
-            logger.log('Deployment finished!');
+        cmd.stderr.on('data', (data) => {
+            data.toString().split("\n").forEach((v) => {
+                logger.log(v);
+            });
+        })
+
+        cmd.on('close', (code) => {
+            logger.log(`Deployment finished with code ${code}`);
         });
     }
 });
