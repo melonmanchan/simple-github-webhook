@@ -21,12 +21,18 @@ http.createServer(function (req, res) {
         res.end('error')
     });
 }).listen(config.PORT, function () {
+
     logger.log('GitHub webhook running at: http://' + ip.address() + ':' + config.PORT + config.HOOK_PATH);
-    logger.log('Listening for commits to branch ' + config.BRANCH);
+
+    if(config.BRANCH)
+        logger.log('Listening for commits to branch ' + config.BRANCH);
+    else
+        logger.log('Listening for commits on any branch...');
+
     logger.log('Will run following command on authenticated request: ' + config.COMMAND);
 });
 var deploy = function (event) {
-    if (event.payload.ref === config.BRANCH || event.payload.hook) {
+    if ((!config.BRANCH || event.payload.ref === config.BRANCH) || event.payload.hook) {
         logger.log(`Running deployment script ${config.COMMAND} now...`)
 
         var cmd = spawn(config.COMMAND, [], {

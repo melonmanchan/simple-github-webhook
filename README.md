@@ -31,7 +31,7 @@ COMMAND  | The command that is run on a succesful webhook  | ./deploy.sh
 SECRET  | The GitHub secret for authentication | None (required!)
 HOOK_PATH  | The sub-path that the script runs under | /
 PORT  | The port the script runs under | 8080
-BRANCH  | The git branch that the webhook is listening for commits | master
+BRANCH  | The git branch that the webhook is listening for commits | undefined (all)
 
 So for example, if you'd like to listen to changes to the feature-foo branch on
 port 1337 and run a script every time someone commits to the branch in
