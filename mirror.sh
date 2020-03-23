@@ -9,7 +9,7 @@ export GIT_ASKPASS=$PWD/token_credentials.sh
 
 if [ ! -d $REPO_TARGET ]; then
     echo >&2 "Repository $REPOSITORY_NAME not found, cloning..."
-    git clone --mirror $REPOSITORY_CLONE $REPO_TARGET
+    git clone --mirror --config core.sharedRepository=true $REPOSITORY_CLONE $REPO_TARGET
 fi
 
 cd $REPO_TARGET
