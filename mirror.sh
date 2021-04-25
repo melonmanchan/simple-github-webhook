@@ -14,7 +14,8 @@ REPOS_DIR=$(dirname $0)/repos
 
 REPO_TARGET="$REPOS_DIR/$REPOSITORY_NAME"
 
-export GIT_ASKPASS=$PWD/token_credentials.sh
+[ -z "$TOKEN_CREDENTIALS" ] && TOKEN_CREDENTIALS="$(dirname $0)/token_credentials.sh"
+export GIT_ASKPASS="$TOKEN_CREDENTIALS"
 
 if [ ! -d $REPO_TARGET ]; then
     echo >&2 "Repository $REPOSITORY_NAME not found, cloning..."
