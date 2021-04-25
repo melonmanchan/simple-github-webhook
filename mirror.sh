@@ -8,9 +8,11 @@ if [ -z "$REPOSITORY_NAME" ]; then
     exit 1
 fi
 
-[ -d repos ] || mkdir repos
+REPOS_DIR=$(dirname $0)/repos
 
-REPO_TARGET=repos/$REPOSITORY_NAME
+[ -d "$REPOS_DIR" ] || mkdir "$REPOS_DIR"
+
+REPO_TARGET="$REPOS_DIR/$REPOSITORY_NAME"
 
 export GIT_ASKPASS=$PWD/token_credentials.sh
 
