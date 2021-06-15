@@ -14,7 +14,7 @@ REPOS_DIR=$(dirname $0)/repos
 
 REPO_TARGET="$REPOS_DIR/$REPOSITORY_NAME"
 
-[ -z "$TOKEN_CREDENTIALS" ] && TOKEN_CREDENTIALS="$(dirname $0)/token_credentials.sh"
+[ -z "$TOKEN_CREDENTIALS" ] && TOKEN_CREDENTIALS="$(cd $(dirname $0); pwd)/token_credentials.sh"
 export GIT_ASKPASS="$TOKEN_CREDENTIALS"
 
 if [ ! -d $REPO_TARGET ]; then
