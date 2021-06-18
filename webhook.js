@@ -7,7 +7,7 @@ var LOG_TYPES = logger.LOG_TYPES;
 
 var http          = require('http');
 var ip            = require('ip');
-var exec          = require('child_process').exec;
+var spawn = require('child_process').spawn;
 var createHandler = require('github-webhook-handler');
 
 var handler = createHandler({
@@ -21,27 +21,47 @@ http.createServer(function (req, res) {
         res.end('error')
     });
 }).listen(config.PORT, function () {
+
     logger.log('GitHub webhook running at: http://' + ip.address() + ':' + config.PORT + config.HOOK_PATH);
-    logger.log('Listening for commits to branch ' + config.BRANCH);
+
+    if(config.BRANCH)
+        logger.log('Listening for commits to branch ' + config.BRANCH);
+    else
+        logger.log('Listening for commits on any branch...');
+
     logger.log('Will run following command on authenticated request: ' + config.COMMAND);
 });
+var deploy = function (event) {
+    if ((!config.BRANCH || event.payload.ref === config.BRANCH) || event.payload.hook) {
+        logger.log(`Running deployment script ${config.COMMAND} now...`)
 
-handler.on('push', function (event) {
-    if (event.payload.ref === config.BRANCH) {
-        logger.log('Running deployment script now...')
-
-        exec(config.COMMAND, function(error, stdout, stderr) {
-            logger.log('stdout: ' + stdout);
-            logger.log('stderr: ' + stderr, LOG_TYPES.ALERT);
-
-            if (error !== null) {
-                logger.log('exec error: ' + error, LOG_TYPES.ALERT);
+        var cmd = spawn(config.COMMAND, [], {
+            env: {
+                REPOSITORY_NAME: event.payload.repository.name,
+                REPOSITORY_CLONE: event.payload.repository.clone_url,
+                REPOSITORY_CLONE_SSH: event.payload.repository.ssh_url
             }
+        })
 
-            logger.log('Deployment finished!');
+        cmd.stdout.on('data', (data) => {
+            data.toString().split("\n").forEach((v) => {
+                logger.log(v);
+            });
+        })
+
+        cmd.stderr.on('data', (data) => {
+            data.toString().split("\n").forEach((v) => {
+                logger.log(v);
+            });
+        })
+
+        cmd.on('close', (code) => {
+            logger.log(`Deployment finished with code ${code}`);
         });
     }
-});
+}
+handler.on('ping', deploy);
+handler.on('push', deploy);
 
 handler.on('error', function (error) {
     logger.log('Webhook error: ' + error, LOG_TYPES.ALERT);
